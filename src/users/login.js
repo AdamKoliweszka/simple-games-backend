@@ -1,7 +1,6 @@
 import { app } from "../app";
-import { sign } from "jsonwebtoken";
 import { check, validationResult } from "express-validator";
-import bcrypt from "bcrypt";
+import { getToken } from "./login-service";
 
 app.post("/login", [check("username").exists()], async (req, resp) => {
   const errors = validationResult(req);
@@ -11,13 +10,10 @@ app.post("/login", [check("username").exists()], async (req, resp) => {
   try {
     const username = req.body.username;
     const password = req.body.password;
-    const cryptedPassword = "";
-    if (!(await bcrypt.compare(password, cryptedPassword))) {
-      resp.status(500).send();
-    }
-    const user = { name: username };
-    const accessToken = sign(user, process.env.ACCESS_TOKEN_SECRET);
-    resp.json({ accessToken: accessToken });
+    const user = { name: username, password: password };
+    const token = await getToken(user);
+    if (token) resp.json({ accessToken: token });
+    else resp.status(500).send();
   } catch (e) {
     resp.status(500).send();
   }
