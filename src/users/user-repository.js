@@ -16,6 +16,6 @@ export const getPasswordByUsername = async (username) => {
 
 export const addUser = (user) => {
   UserModel.create(user, (error) => {
-    console.log(error);
+    if (error) console.log(error);
   });
 };

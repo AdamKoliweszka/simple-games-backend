@@ -10,6 +10,6 @@ export const removeRefreshToken = async (refreshToken) => {
 
 export const addRefreshToken = async (refreshToken) => {
   return RefreshTokenModel.create({ refreshToken }, (error) => {
-    console.log(error);
+    if (error) console.log(error);
   });
 };

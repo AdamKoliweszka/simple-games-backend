@@ -15,7 +15,6 @@ app.post(
       const password = req.body.password;
       const user = { name: username, password: password };
       const tokens = await getTokens(user);
-      console.log(tokens);
       if (tokens) resp.json(tokens);
       else resp.status(500).send();
     } catch (e) {
