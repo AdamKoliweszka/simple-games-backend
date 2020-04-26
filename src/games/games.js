@@ -1,4 +1,4 @@
-import { authenticationTokenMiddleware } from "../users/authentication-token-middleware";
+import { authenticationTokenMiddleware } from "../users/auth/authentication-token-middleware";
 import { app } from "../app";
 
 const games = [

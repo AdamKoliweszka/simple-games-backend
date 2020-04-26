@@ -1,6 +1,6 @@
-import { app } from "../app";
+import { app } from "../../app";
 import { check, validationResult } from "express-validator";
-import { getToken } from "./login-service";
+import { getTokens } from "./login-service";
 
 app.post(
   "/login",
@@ -14,8 +14,9 @@ app.post(
       const username = req.body.username;
       const password = req.body.password;
       const user = { name: username, password: password };
-      const token = await getToken(user);
-      if (token) resp.json({ accessToken: token });
+      const tokens = await getTokens(user);
+      console.log(tokens);
+      if (tokens) resp.json(tokens);
       else resp.status(500).send();
     } catch (e) {
       resp.status(500).send();
