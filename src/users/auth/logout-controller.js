@@ -2,7 +2,7 @@ import { app } from "../../app";
 import { check, validationResult } from "express-validator";
 import { logoutFunction } from "./logout-service";
 
-app.delete("/logout", [check("refreshToken").exists()], async (req, resp) => {
+app.post("/logout", [check("refreshToken").exists()], async (req, resp) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return resp.status(422).json({ errors: errors.array() });
