@@ -5,7 +5,9 @@ export const getRefreshToken = async (user) => {
 };
 
 export const getAccessToken = async (user) => {
-  return await sign(user, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: "10m",
+  let copyOfUser = Object.assign({}, user);
+  if (copyOfUser.iat) delete copyOfUser.iat;
+  return await sign(copyOfUser, process.env.ACCESS_TOKEN_SECRET, {
+    expiresIn: "10s",
   });
 };

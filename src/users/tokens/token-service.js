@@ -10,7 +10,8 @@ export const generateAccessToken = async (refreshToken) => {
       process.env.REFRESH_TOKEN_SECRET,
       async (err, user) => {
         if (err) return null;
-        return await getAccessToken(user);
+        let result = await getAccessToken(user);
+        return result;
       }
     );
   } else return null;
