@@ -16,7 +16,7 @@ app.post(
       const user = { name: username, password: password };
       const tokens = await getTokens(user);
       if (tokens) resp.json(tokens);
-      else resp.status(500).send();
+      else resp.status(401).send();
     } catch (e) {
       resp.status(500).send();
     }
