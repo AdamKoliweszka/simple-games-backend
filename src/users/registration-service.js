@@ -1,16 +1,22 @@
 import bcrypt from "bcrypt";
-import { isUserExist, addUser } from "./user-repository";
-export const createUserWithEncryptPassword = async (user) => {
-  const salt = await bcrypt.genSalt();
-  const cryptedPassword = await bcrypt.hash(user.password, salt);
-  user.password = cryptedPassword;
-  return user;
-};
-export const saveUser = async (user) => {
-  let isExist = await isUserExist(user.name);
-  if (!isExist) {
-    let userWithEncryptedPassword = await createUserWithEncryptPassword(user);
-    addUser(userWithEncryptedPassword);
-    return userWithEncryptedPassword;
-  } else return null;
-};
+import { UserRepository } from "./user-repository";
+
+export class UserService {
+  constructor() {
+    this.userRepository = new UserRepository();
+  }
+  async createUserWithEncryptPassword(user) {
+    const salt = await bcrypt.genSalt();
+    const cryptedPassword = await bcrypt.hash(user.password, salt);
+    user.password = cryptedPassword;
+    return user;
+  }
+  async saveUser(user) {
+    let isExist = await this.userRepository.isUserExist(user.name);
+    if (!isExist) {
+      let userWithEncryptedPassword = await createUserWithEncryptPassword(user);
+      this.userRepository.addUser(userWithEncryptedPassword);
+      return userWithEncryptedPassword;
+    } else return null;
+  }
+}
