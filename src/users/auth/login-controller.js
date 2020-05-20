@@ -1,6 +1,6 @@
 import { app } from "../../app";
 import { check, validationResult } from "express-validator";
-import { getTokens } from "./login-service";
+import { LoginService } from "./login-service";
 
 app.post(
   "/login",
@@ -11,10 +11,11 @@ app.post(
       return resp.status(422).json({ errors: errors.array() });
     }
     try {
+      const loginService = new LoginService();
       const username = req.body.username;
       const password = req.body.password;
       const user = { name: username, password: password };
-      const tokens = await getTokens(user);
+      const tokens = await loginService.getTokens(user);
       if (tokens) resp.json(tokens);
       else resp.status(401).send();
     } catch (e) {
