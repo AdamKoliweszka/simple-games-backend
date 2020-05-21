@@ -1,8 +1,5 @@
 import { app } from "../app";
-import {
-  createUserWithEncryptPassword,
-  saveUser,
-} from "./registration-service";
+import { RegistrationService } from "./registration-service";
 import { check, validationResult } from "express-validator";
 
 app.post(
@@ -13,11 +10,12 @@ app.post(
     if (!errors.isEmpty()) {
       return resp.status(422).json({ errors: errors.array() });
     }
+    const registrationService = new RegistrationService();
     const username = req.body.username;
     const password = req.body.password;
     try {
       let user = { name: username, password: password };
-      let userWithEncryptedPassword = await saveUser(user);
+      let userWithEncryptedPassword = await registrationService.saveUser(user);
       if (userWithEncryptedPassword) {
         resp.json(userWithEncryptedPassword);
       } else resp.status(500).send();
