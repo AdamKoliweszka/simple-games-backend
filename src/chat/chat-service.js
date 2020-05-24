@@ -1,10 +1,14 @@
 import { ChatRepository } from "./chat-repository";
+import { ChatWsController } from "./chat-ws-controller";
 
 export class ChatService {
   constructor() {
     this.chatRepository = new ChatRepository();
+    this.chatWsController = new ChatWsController();
   }
-  addChatMessage(chatMessage) {
-    return this.chatRepositor(chatMessage);
+  async addChatMessage(chatMessage) {
+    this.chatWsController.emitMessage(chatMessage);
+    let result = await this.chatRepository.addChatMessage(chatMessage);
+    return result;
   }
 }
