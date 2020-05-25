@@ -11,4 +11,9 @@ export class ChatService {
     let result = await this.chatRepository.addChatMessage(chatMessage);
     return result;
   }
+
+  async getOldMessages(numberOfMessages) {
+    let result = await this.chatRepository.getOldMessages(numberOfMessages);
+    return result;
+  }
 }

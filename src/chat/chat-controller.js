@@ -26,3 +26,24 @@ app.post(
     }
   }
 );
+
+app.post(
+  "/chat/old-messages",
+  [check("numberOfMessages").isNumeric()],
+  authenticationTokenMiddleware,
+  async (req, resp) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return resp.status(422).json({ errors: errors.array() });
+    }
+    try {
+      const chatService = new ChatService();
+      const numberOfMessages = req.body.numberOfMessages;
+      let chatMessages = await chatService.getOldMessages(numberOfMessages);
+      if (chatMessages) resp.json(chatMessages);
+      else resp.status(401).send();
+    } catch (e) {
+      resp.status(500).send();
+    }
+  }
+);
