@@ -5,5 +5,7 @@ import games from "./src/games/games";
 import login from "./src/users/auth/login-controller";
 import registration from "./src/users/registration-controller";
 import logoutController from "./src/users/auth/logout-controller";
+import chatController from "./src/chat/chat-controller";
 import token from "./src/users/tokens/token-controller";
+import * as ws_auth from "./src/users/auth/ws-auth";
 // const bcrypt = require("bcrypt");
