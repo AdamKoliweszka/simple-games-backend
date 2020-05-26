@@ -2,6 +2,6 @@ import { io } from "../io";
 
 export class ChatWsController {
   emitMessage(message) {
-    io.emit("chat/message", message);
+    io.to("users").emit("chat/message", message);
   }
 }
