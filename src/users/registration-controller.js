@@ -4,7 +4,13 @@ import { check, validationResult } from "express-validator";
 
 app.post(
   "/users",
-  [check("username").exists(), check("password").exists()],
+  [
+    check("username").isAlphanumeric(),
+    check("password").exists(),
+    check("gender").isNumeric(),
+    check("dateOfBirth").isISO8601(),
+    check("email").isEmail(),
+  ],
   async (req, resp) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
