@@ -20,7 +20,6 @@ export class UserRepository {
   }
 
   async addUser(user) {
-    console.log("a", user);
     return UserModel.create(user, (error) => {
       if (error) console.log(error);
     });

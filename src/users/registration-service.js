@@ -6,7 +6,6 @@ export class RegistrationService {
     this.userRepository = new UserRepository();
   }
   async createUserWithEncryptPassword(user) {
-    console.log(user);
     const salt = await bcrypt.genSalt();
     const cryptedPassword = await bcrypt.hash(user.password, salt);
     user.password = cryptedPassword;
