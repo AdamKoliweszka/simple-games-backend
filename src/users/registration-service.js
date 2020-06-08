@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import { UserRepository } from "./user-repository";
 
-export class UserService {
+export class RegistrationService {
   constructor() {
     this.userRepository = new UserRepository();
   }
