@@ -12,7 +12,7 @@ export class LoginService {
 
   async getTokens(user) {
     const cryptedPassword = await this.userRepository.getPasswordByUsername(
-      user.name
+      user.username
     );
     if (!cryptedPassword) return null;
     if (!(await bcrypt.compare(user.password, cryptedPassword))) {

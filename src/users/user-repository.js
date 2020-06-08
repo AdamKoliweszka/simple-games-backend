@@ -2,12 +2,12 @@ import { UserModel } from "./user-schema";
 
 export class UserRepository {
   async isUserExist(username) {
-    return UserModel.exists({ name: username });
+    return UserModel.exists({ username: username });
   }
 
   async getPasswordByUsername(username) {
     return await UserModel.findOne(
-      { name: username },
+      { username: username },
       { password: 1, _id: 0 }
     ).then((value) => {
       if (value) return value.password;
@@ -16,7 +16,8 @@ export class UserRepository {
   }
 
   async addUser(user) {
-    UserModel.create(user, (error) => {
+    console.log("a", user);
+    return UserModel.create(user, (error) => {
       if (error) console.log(error);
     });
   }

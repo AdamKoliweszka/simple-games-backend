@@ -19,8 +19,9 @@ app.post(
     const registrationService = new RegistrationService();
     const username = req.body.username;
     const password = req.body.password;
+
     try {
-      let user = { name: username, password: password };
+      let user = req.body;
       let userWithEncryptedPassword = await registrationService.saveUser(user);
       if (userWithEncryptedPassword) {
         resp.json(userWithEncryptedPassword);

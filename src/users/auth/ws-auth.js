@@ -5,7 +5,7 @@ io.on("connection", (socket) => {
   socket.on("authentication", (data) => {
     verify(data.accessToken, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
       if (!err) {
-        socket.user = user.name;
+        socket.user = user.username;
         socket.join("users");
       }
     });
