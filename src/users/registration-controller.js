@@ -27,7 +27,7 @@ app.post(
         resp.json(userWithEncryptedPassword);
       } else resp.status(500).send();
     } catch (e) {
-      resp.status(500).send();
+      resp.status(422).json({ errors: e });
     }
   }
 );

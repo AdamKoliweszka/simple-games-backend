@@ -5,6 +5,10 @@ export class UserRepository {
     return UserModel.exists({ username: username });
   }
 
+  async isEmailExist(email) {
+    return UserModel.exists({ email });
+  }
+
   async getPasswordByUsername(username) {
     return await UserModel.findOne(
       { username: username },

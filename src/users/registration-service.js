@@ -13,8 +13,9 @@ export class RegistrationService {
     return user;
   }
   async saveUser(user) {
-    let isExist = await this.userRepository.isUserExist(user.username);
-    if (!isExist) {
+    let isUsernameExist = await this.userRepository.isUserExist(user.username);
+    let isEmailExist = await this.userRepository.isEmailExist(user.email);
+    if (!isUsernameExist && !isEmailExist) {
       let userWithEncryptedPassword = await this.createUserWithEncryptPassword(
         user
       );
@@ -22,6 +23,11 @@ export class RegistrationService {
       await this.userRepository.addUser(userWithEncryptedPassword);
 
       return userWithEncryptedPassword;
-    } else return null;
+    } else {
+      let errors = [];
+      if (isEmailExist) errors.push("EMAIL_EXIST");
+      if (isUsernameExist) errors.push("USERNAME_EXIST");
+      throw errors;
+    }
   }
 }
