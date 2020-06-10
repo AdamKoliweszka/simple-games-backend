@@ -5,6 +5,7 @@ let UserSchema = Schema({
   email: String,
   gender: Number,
   dateOfBirth: Date,
+  dateOfRegistration: Date,
 });
 
 export const UserModel = model("User", UserSchema, "users");

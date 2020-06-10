@@ -18,8 +18,8 @@ export class RegistrationService {
       let userWithEncryptedPassword = await this.createUserWithEncryptPassword(
         user
       );
-
-      await this.userRepository.addUser(userWithEncryptedPassword);
+      (userWithEncryptedPassword.dateOfRegistration = new Date()),
+        await this.userRepository.addUser(userWithEncryptedPassword);
 
       return userWithEncryptedPassword;
     } else {
