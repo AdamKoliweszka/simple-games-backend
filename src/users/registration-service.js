@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import { UserRepository } from "./user-repository";
 
-export class UserService {
+export class RegistrationService {
   constructor() {
     this.userRepository = new UserRepository();
   }
@@ -12,11 +12,21 @@ export class UserService {
     return user;
   }
   async saveUser(user) {
-    let isExist = await this.userRepository.isUserExist(user.name);
-    if (!isExist) {
-      let userWithEncryptedPassword = await createUserWithEncryptPassword(user);
-      this.userRepository.addUser(userWithEncryptedPassword);
+    let isUsernameExist = await this.userRepository.isUserExist(user.username);
+    let isEmailExist = await this.userRepository.isEmailExist(user.email);
+    if (!isUsernameExist && !isEmailExist) {
+      let userWithEncryptedPassword = await this.createUserWithEncryptPassword(
+        user
+      );
+      (userWithEncryptedPassword.dateOfRegistration = new Date()),
+        await this.userRepository.addUser(userWithEncryptedPassword);
+
       return userWithEncryptedPassword;
-    } else return null;
+    } else {
+      let errors = [];
+      if (isEmailExist) errors.push("EMAIL_EXIST");
+      if (isUsernameExist) errors.push("USERNAME_EXIST");
+      throw errors;
+    }
   }
 }

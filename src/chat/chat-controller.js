@@ -14,7 +14,7 @@ app.post(
     }
     try {
       const chatService = new ChatService();
-      const username = req.user.name;
+      const username = req.user.username;
       const date = new Date();
       const message = req.body.message;
       let chatMessage = { username, message, date };

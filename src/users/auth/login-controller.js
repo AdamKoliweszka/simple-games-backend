@@ -14,7 +14,7 @@ app.post(
       const loginService = new LoginService();
       const username = req.body.username;
       const password = req.body.password;
-      const user = { name: username, password: password };
+      const user = { username: username, password: password };
       const tokens = await loginService.getTokens(user);
       if (tokens) resp.json(tokens);
       else resp.status(401).send();
