@@ -1,18 +1,19 @@
 import { Injectable } from "@nestjs/common";
-import { LoginInfo } from "./schema/login-info.schema";
+import { LoginInfo } from "../login-info-repository/schema/login-info.schema";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { CreateAccessTokenDto } from "./dto/create-access-token.dto";
 import { verify } from "jsonwebtoken";
 import { sign } from "jsonwebtoken";
+import { LoginInfoRepositoryService } from "src/login-info-repository/login-info-repository.service";
 
 @Injectable()
 export class TokensService {
-  constructor(
-    @InjectModel(LoginInfo.name) private loginInfoModel: Model<LoginInfo>
-  ) {}
+  constructor(private loginInfoRepositoryService: LoginInfoRepositoryService) {}
   async generateAccessToken(createAccessTokenDto: CreateAccessTokenDto) {
-    const isExist = await this.isRefreshTokenExist(createAccessTokenDto);
+    const isExist = await this.loginInfoRepositoryService.isRefreshTokenExist(
+      createAccessTokenDto.refreshToken
+    );
     if (isExist) {
       return verify(
         createAccessTokenDto.refreshToken,
@@ -24,11 +25,6 @@ export class TokensService {
         }
       );
     }
-  }
-  async isRefreshTokenExist(createAccessTokenDto: CreateAccessTokenDto) {
-    return this.loginInfoModel.exists({
-      refreshToken: createAccessTokenDto.refreshToken,
-    });
   }
 
   async getAccessToken(user) {

@@ -1,7 +1,8 @@
-import { Module } from '@nestjs/common';
-import { TokensFabricService } from './tokens-fabric.service';
+import { Module } from "@nestjs/common";
+import { TokensFabricService } from "./tokens-fabric.service";
 
 @Module({
-  providers: [TokensFabricService]
+  providers: [TokensFabricService],
+  exports: [TokensFabricService],
 })
 export class TokensFabricModule {}

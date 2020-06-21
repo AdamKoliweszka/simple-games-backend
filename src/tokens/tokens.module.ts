@@ -1,16 +1,11 @@
 import { Module } from "@nestjs/common";
 import { TokensController } from "./tokens.controller";
 import { TokensService } from "./tokens.service";
-import { LoginInfo, LoginInfoSchema } from "./schema/login-info.schema";
-import { MongooseModule } from "@nestjs/mongoose";
+import { LoginInfoRepositoryModule } from "src/login-info-repository/login-info-repository.module";
 
 @Module({
   controllers: [TokensController],
   providers: [TokensService],
-  imports: [
-    MongooseModule.forFeature([
-      { name: LoginInfo.name, schema: LoginInfoSchema },
-    ]),
-  ],
+  imports: [LoginInfoRepositoryModule],
 })
 export class TokensModule {}
