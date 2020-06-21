@@ -41,4 +41,13 @@ export class UsersService {
     user.password = cryptedPassword;
     return user;
   }
+
+  async getPasswordByUsername(username: string) {
+    return await this.userModel
+      .findOne({ username: username }, { password: 1, _id: 0 })
+      .then((value) => {
+        if (value) return value.password;
+        else return null;
+      });
+  }
 }
