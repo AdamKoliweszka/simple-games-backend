@@ -7,5 +7,8 @@ export class TokensController {
   constructor(private tokensService: TokensService) {}
 
   @Post()
-  create(@Body() createAccessTokenDto: CreateAccessTokenDto) {}
+  create(@Body() createAccessTokenDto: CreateAccessTokenDto) {
+    console.log("tokens");
+    return this.tokensService.generateAccessToken(createAccessTokenDto);
+  }
 }
