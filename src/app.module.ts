@@ -7,6 +7,7 @@ import { MongooseModule } from "@nestjs/mongoose";
 import { TokensModule } from "./tokens/tokens.module";
 import { ConfigModule } from "@nestjs/config";
 import { LoginModule } from "./login/login.module";
+import { LogoutModule } from './logout/logout.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { LoginModule } from "./login/login.module";
     TokensModule,
     ConfigModule.forRoot(),
     LoginModule,
+    LogoutModule,
   ],
   controllers: [AppController],
   providers: [AppService],
