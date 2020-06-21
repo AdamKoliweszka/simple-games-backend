@@ -5,6 +5,8 @@ import { Document } from "mongoose";
 export class LoginInfo extends Document {
   @Prop()
   refreshToken: string;
+  @Prop()
+  dateOfLogin: Date;
 }
 
 export const LoginInfoSchema = SchemaFactory.createForClass(LoginInfo);

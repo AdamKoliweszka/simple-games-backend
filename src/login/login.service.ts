@@ -22,7 +22,10 @@ export class LoginService {
     }
     const accessToken = await this.tokensFabricService.getAccessToken(user);
     const refreshToken = await this.tokensFabricService.getRefreshToken(user);
-    await this.loginInfoRepository.addRefreshToken(refreshToken);
+    await this.loginInfoRepository.addRefreshToken({
+      refreshToken: refreshToken,
+      dateOfLogin: new Date(),
+    });
     return { accessToken, refreshToken };
   }
 }
