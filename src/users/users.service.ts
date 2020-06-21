@@ -1,24 +1,26 @@
 import { Injectable } from "@nestjs/common";
-import { InjectModel } from "@nestjs/mongoose";
-import { User } from "./schema/user.schema";
-import { Model } from "mongoose";
+import { User } from "../user-repository/schema/user.schema";
 import { CreateUserDto } from "./dto/create-user.dto";
 import * as bcrypt from "bcrypt";
+import { UserRepositoryService } from "src/user-repository/user-repository.service";
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectModel(User.name) private userModel: Model<User>) {}
-
+  constructor(private userRepository: UserRepositoryService) {}
   async create(createUserDto: CreateUserDto): Promise<User> {
-    let isUsernameExist = await this.isUserExist(createUserDto.username);
-    let isEmailExist = await this.isEmailExist(createUserDto.email);
+    let isUsernameExist = await this.userRepository.isUserExist(
+      createUserDto.username
+    );
+    let isEmailExist = await this.userRepository.isEmailExist(
+      createUserDto.email
+    );
     if (!isUsernameExist && !isEmailExist) {
       createUserDto = await this.encryptUserPassword(createUserDto);
-      const createdUser = new this.userModel({
+      const user = {
         ...createUserDto,
         dateOfRegistration: new Date(),
-      });
-      return createdUser.save();
+      } as User;
+      return this.userRepository.create(user);
     } else {
       let errors = [];
       if (isEmailExist) errors.push("EMAIL_EXIST");
@@ -27,27 +29,10 @@ export class UsersService {
     }
   }
 
-  async isUserExist(username: string): Promise<boolean> {
-    return this.userModel.exists({ username: username });
-  }
-
-  async isEmailExist(email: string): Promise<boolean> {
-    return this.userModel.exists({ email });
-  }
-
   async encryptUserPassword(user: CreateUserDto): Promise<CreateUserDto> {
     const salt = await bcrypt.genSalt();
     const cryptedPassword = await bcrypt.hash(user.password, salt);
     user.password = cryptedPassword;
     return user;
-  }
-
-  async getPasswordByUsername(username: string) {
-    return await this.userModel
-      .findOne({ username: username }, { password: 1, _id: 0 })
-      .then((value) => {
-        if (value) return value.password;
-        else return null;
-      });
   }
 }

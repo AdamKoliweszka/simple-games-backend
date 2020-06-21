@@ -6,7 +6,7 @@ import { UsersModule } from "./users/users.module";
 import { MongooseModule } from "@nestjs/mongoose";
 import { TokensModule } from "./tokens/tokens.module";
 import { ConfigModule } from "@nestjs/config";
-import { LoginModule } from './login/login.module';
+import { LoginModule } from "./login/login.module";
 
 @Module({
   imports: [
