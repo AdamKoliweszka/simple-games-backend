@@ -8,6 +8,9 @@ import { TokensModule } from "./tokens/tokens.module";
 import { ConfigModule } from "@nestjs/config";
 import { LoginModule } from "./login/login.module";
 import { LogoutModule } from './logout/logout.module';
+import { ChatModule } from './chat/chat.module';
+import { ChatOldMessagesModule } from './chat-old-messages/chat-old-messages.module';
+import { ChatRepositoryModule } from './chat-repository/chat-repository.module';
 
 @Module({
   imports: [
@@ -18,6 +21,9 @@ import { LogoutModule } from './logout/logout.module';
     ConfigModule.forRoot(),
     LoginModule,
     LogoutModule,
+    ChatModule,
+    ChatOldMessagesModule,
+    ChatRepositoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],
