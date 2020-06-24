@@ -8,6 +8,7 @@ export class TokensController {
 
   @Post()
   create(@Body() createAccessTokenDto: CreateAccessTokenDto) {
+    console.log(createAccessTokenDto);
     return this.tokensService.generateAccessToken(createAccessTokenDto);
   }
 }

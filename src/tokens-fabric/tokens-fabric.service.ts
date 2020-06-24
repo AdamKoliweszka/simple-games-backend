@@ -9,10 +9,9 @@ export class TokensFabricService {
   }
 
   async getAccessToken(user: LoginData) {
-    let copyOfUser = { ...user };
-    // if (copyOfUser.iat) delete copyOfUser.iat;
+    let copyOfUser = { username: user.username, password: user.password };
     return await sign(copyOfUser, process.env.ACCESS_TOKEN_SECRET, {
-      expiresIn: "15m",
+      expiresIn: "1m",
     });
   }
 }
