@@ -10,13 +10,13 @@ export class ChatService {
     private chatGateway: ChatGateway
   ) {}
 
-  addChatMessage(createChatMessageDto: CreateChatMessageDto) {
-    let message = {
-      ...createChatMessageDto,
+  addChatMessage(message: string, username: string) {
+    let chatMessage = {
+      message: message,
       date: new Date(),
-      username: "test",
+      username: username,
     };
-    this.chatGateway.emitChatMessage(message);
-    return this.chatRepositoryService.addChatMessage(message);
+    this.chatGateway.emitChatMessage(chatMessage);
+    return this.chatRepositoryService.addChatMessage(chatMessage);
   }
 }

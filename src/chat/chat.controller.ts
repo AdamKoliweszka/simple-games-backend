@@ -1,4 +1,4 @@
-import { Controller, Post, Body } from "@nestjs/common";
+import { Controller, Post, Body, Req } from "@nestjs/common";
 import { CreateChatMessageDto } from "./dto/create-chat-message.dto";
 import { ChatService } from "./chat.service";
 
@@ -6,7 +6,10 @@ import { ChatService } from "./chat.service";
 export class ChatController {
   constructor(private chatService: ChatService) {}
   @Post()
-  create(@Body() createChatMessageDto: CreateChatMessageDto) {
-    this.chatService.addChatMessage(createChatMessageDto);
+  create(@Req() req, @Body() createChatMessageDto: CreateChatMessageDto) {
+    this.chatService.addChatMessage(
+      createChatMessageDto.message,
+      req.user.username
+    );
   }
 }
