@@ -17,6 +17,8 @@ import { ChatModule } from "./chat/chat.module";
 import { ChatOldMessagesModule } from "./chat-old-messages/chat-old-messages.module";
 import { ChatRepositoryModule } from "./chat-repository/chat-repository.module";
 import { AuthMiddleware } from "./auth.middleware";
+import { AuthGateway } from "./auth-ws/auth.gateway";
+import { AuthWsModule } from "./auth-ws/auth-ws.module";
 
 @Module({
   imports: [
@@ -30,6 +32,7 @@ import { AuthMiddleware } from "./auth.middleware";
     ChatModule,
     ChatOldMessagesModule,
     ChatRepositoryModule,
+    AuthWsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
