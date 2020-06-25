@@ -7,6 +7,7 @@ import { UserRepositoryService } from "src/user-repository/user-repository.servi
 @Injectable()
 export class UsersService {
   constructor(private userRepository: UserRepositoryService) {}
+
   async create(createUserDto: CreateUserDto): Promise<User> {
     let isUsernameExist = await this.userRepository.isUserExist(
       createUserDto.username
@@ -34,5 +35,9 @@ export class UsersService {
     const cryptedPassword = await bcrypt.hash(user.password, salt);
     user.password = cryptedPassword;
     return user;
+  }
+
+  getAllUsers() {
+    return this.userRepository.getAll();
   }
 }

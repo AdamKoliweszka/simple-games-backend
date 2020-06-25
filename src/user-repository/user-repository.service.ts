@@ -28,4 +28,8 @@ export class UserRepositoryService {
     const createdUser = new this.userModel(user);
     return createdUser.save();
   }
+
+  async getAll() {
+    return this.userModel.find({}, { password: 0, _id: 0, __v: 0 });
+  }
 }
