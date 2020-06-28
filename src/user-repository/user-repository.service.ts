@@ -30,6 +30,6 @@ export class UserRepositoryService {
   }
 
   async getAll() {
-    return this.userModel.find({}, { password: 0, _id: 0, __v: 0 });
+    return this.userModel.find({}, { email: 0, password: 0, _id: 0, __v: 0 });
   }
 }
