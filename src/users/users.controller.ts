@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Res } from "@nestjs/common";
+import { Controller, Post, Body, Res, Get } from "@nestjs/common";
 import { User } from "./interfaces/user.interface";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UsersService } from "./users.service";
@@ -21,5 +21,9 @@ export class UsersController {
       resp.status(422).json({ errors: e });
       return null;
     }
+  }
+  @Get()
+  getAll() {
+    return this.usersService.getAllUsers();
   }
 }
