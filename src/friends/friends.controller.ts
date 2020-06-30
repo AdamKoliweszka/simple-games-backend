@@ -1,4 +1,4 @@
-import { Controller, Post, Req } from "@nestjs/common";
+import { Controller, Post, Req, Get } from "@nestjs/common";
 import { FriendsService } from "./friends.service";
 import { CreateFriendRelationDto } from "./dto/create-friend-relation.dto";
 
@@ -9,5 +9,15 @@ export class FriendsController {
   create(@Req() req, createFriendRelationDto: CreateFriendRelationDto) {
     let usernameOfUser = req.user.username;
     let usernameOfFriend = createFriendRelationDto.friendUsername;
+    return this.friendsService.addRelationOfFriendship(
+      usernameOfUser,
+      usernameOfFriend
+    );
+  }
+
+  @Get()
+  getAll(@Req() req) {
+    let usernameOfUser = req.user.username;
+    this.friendsService.getAllFriends(usernameOfUser);
   }
 }

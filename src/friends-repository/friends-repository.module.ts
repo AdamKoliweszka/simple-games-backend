@@ -10,5 +10,6 @@ import { MongooseModule } from "@nestjs/mongoose";
       { name: Friendship.name, schema: FriendshipSchema },
     ]),
   ],
+  exports: [FriendsRepositoryService],
 })
 export class FriendsRepositoryModule {}
