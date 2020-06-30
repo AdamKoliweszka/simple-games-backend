@@ -19,8 +19,8 @@ import { ChatRepositoryModule } from "./chat-repository/chat-repository.module";
 import { AuthMiddleware } from "./auth.middleware";
 import { AuthGateway } from "./auth-ws/auth.gateway";
 import { AuthWsModule } from "./auth-ws/auth-ws.module";
-import { FriendsModule } from './friends/friends.module';
-import { FriendsRepositoryModule } from './friends-repository/friends-repository.module';
+import { FriendsModule } from "./friends/friends.module";
+import { FriendsRepositoryModule } from "./friends-repository/friends-repository.module";
 
 @Module({
   imports: [
@@ -45,6 +45,9 @@ export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(AuthMiddleware)
-      .forRoutes({ path: "chat", method: RequestMethod.POST });
+      .forRoutes(
+        { path: "chat", method: RequestMethod.POST },
+        { path: "friends", method: RequestMethod.ALL }
+      );
   }
 }
