@@ -32,9 +32,16 @@ export class FriendsRepositoryService {
   }
 
   async getFriends(username: string) {
-    return this.friendshipModel.find({
-      usernameOfStartingRelationshipUser: username,
-      usernameOfSecondUser: username,
-    });
+    console.log(username);
+    // return this.friendshipModel.find({}, {});
+    return this.friendshipModel.find(
+      {
+        $or: [
+          { usernameOfStartingRelationshipUser: username },
+          { usernameOfSecondUser: username },
+        ],
+      },
+      {}
+    );
   }
 }

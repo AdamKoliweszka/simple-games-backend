@@ -16,8 +16,10 @@ export class FriendsController {
   }
 
   @Get()
-  getAll(@Req() req) {
+  async getAll(@Req() req) {
     let usernameOfUser = req.user.username;
-    this.friendsService.getAllFriends(usernameOfUser);
+    let result = await this.friendsService.getAllFriends(usernameOfUser);
+    console.log(result);
+    return result;
   }
 }

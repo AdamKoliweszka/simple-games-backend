@@ -26,5 +26,7 @@ export class FriendsService {
 
   acceptRelationOfFriendship() {}
 
-  getAllFriends(username: string) {}
+  getAllFriends(username: string) {
+    return this.friendsRepositoryService.getFriends(username);
+  }
 }
