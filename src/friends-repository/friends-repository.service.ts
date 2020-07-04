@@ -32,8 +32,6 @@ export class FriendsRepositoryService {
   }
 
   async getFriends(username: string) {
-    console.log(username);
-    // return this.friendshipModel.find({}, {});
     return this.friendshipModel.find(
       {
         $or: [
