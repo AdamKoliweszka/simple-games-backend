@@ -19,7 +19,7 @@ export class FriendsService {
         status: 0,
       } as Friendship;
       return this.friendsRepositoryService.createFriendship(friendship);
-    }
+    } else throw ["FRIENDSHIP_EXIST"];
   }
 
   removeRelationOfFriendship() {}

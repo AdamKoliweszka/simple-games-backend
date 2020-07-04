@@ -38,7 +38,7 @@ function generateAllNewData() {
   return data;
 }
 
-describe("Test login functionality", () => {
+describe("Test friendship functionality", () => {
   //   beforeEach(() => {});
   it("Adding to friends", () => {
     let data = generateAllNewData();
@@ -57,9 +57,6 @@ describe("Test login functionality", () => {
       }).then((response) => {
         expect(response.status).to.eq(201);
       });
-    });
-    cy.request("POST", "localhost:3000/login", data.user2).then((value) => {
-      data.accessToken2 = value.body.accessToken;
     });
   });
 
@@ -119,6 +116,36 @@ describe("Test login functionality", () => {
           }).then((response) => {
             expect(response.body).to.have.length(1);
           });
+        });
+      });
+    });
+  });
+  it("Error on adding to same friendship", () => {
+    let data = generateAllNewData();
+    cy.request("POST", "localhost:3000/users", data.user1);
+    cy.request("POST", "localhost:3000/users", data.user2);
+    cy.request("POST", "localhost:3000/login", data.user1).then((value) => {
+      data.accessToken1 = value.body.accessToken;
+
+      cy.request({
+        method: "POST",
+        url: "localhost:3000/friends",
+        body: data.friendship1,
+        auth: {
+          bearer: data.accessToken1,
+        },
+      }).then((response) => {
+        expect(response.status).to.eq(201);
+        cy.request({
+          method: "POST",
+          url: "localhost:3000/friends",
+          body: data.friendship1,
+          auth: {
+            bearer: data.accessToken1,
+          },
+          failOnStatusCode: false,
+        }).then((response) => {
+          expect(response.status).to.eq(422);
         });
       });
     });
