@@ -26,6 +26,6 @@ export class LoginService {
       refreshToken: refreshToken,
       dateOfLogin: new Date(),
     });
-    return { accessToken, refreshToken };
+    return { accessToken, refreshToken, username: "" };
   }
 }
