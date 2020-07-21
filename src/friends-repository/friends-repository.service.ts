@@ -69,7 +69,8 @@ export class FriendsRepositoryService {
         usernameOfStartingRelationshipUser: usernameOfStartingRelationshipUser,
         usernameOfSecondUser: usernameOfSecondUser,
       },
-      { status: status }
+      { status: status },
+      { new: true }
     );
   }
 }
