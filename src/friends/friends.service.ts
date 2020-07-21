@@ -32,15 +32,61 @@ export class FriendsService {
       usernameOfFriend,
       usernameOfAcceptingUser
     );
-    if (!friendship) throw ["FRIENDSHIP_NOT_EXIST"];
+    if (!friendship) throw ["INVITE_NOT_EXIST"];
     if (friendship.usernameOfSecondUser !== usernameOfAcceptingUser)
       throw ["USER_CANT_ACCEPT"];
     if (friendship.status === StatusOfFriendship.ACCEPTED)
-      throw ["FRIENDSHIP_ACCEPTED"];
+      throw ["INVITE_ACCEPTED"];
+    if (friendship.status === StatusOfFriendship.NOT_ACCEPTED)
+      throw ["INVITE_NOT_ACCEPTED_BEFORE"];
     if (friendship.status === StatusOfFriendship.REMOVED)
       throw ["FRIENDSHIP_REMOVED"];
     return this.friendsRepositoryService.setStatusOfFriendship(
       StatusOfFriendship.ACCEPTED,
+      usernameOfFriend,
+      usernameOfAcceptingUser
+    );
+  }
+
+  async removeRelationOfFriendship(
+    usernameOfAcceptingUser: string,
+    usernameOfFriend: string
+  ) {
+    let friendship = await this.friendsRepositoryService.getFriendship(
+      usernameOfFriend,
+      usernameOfAcceptingUser
+    );
+    if (!friendship) throw ["FRIENDSHIP_NOT_EXIST"];
+    if (friendship.status === StatusOfFriendship.AFTER_INVITE)
+      throw ["FRIENDSHIP_NOT_EXIST"];
+    if (friendship.status === StatusOfFriendship.NOT_ACCEPTED)
+      throw ["FRIENDSHIP_NOT_ACCEPTED_BEFORE"];
+    if (friendship.status === StatusOfFriendship.REMOVED)
+      throw ["FRIENDSHIP_REMOVED"];
+    return this.friendsRepositoryService.setStatusOfFriendship(
+      StatusOfFriendship.REMOVED,
+      usernameOfFriend,
+      usernameOfAcceptingUser
+    );
+  }
+
+  async discardInviteToFriendship(
+    usernameOfAcceptingUser: string,
+    usernameOfFriend: string
+  ) {
+    let friendship = await this.friendsRepositoryService.getFriendship(
+      usernameOfFriend,
+      usernameOfAcceptingUser
+    );
+    if (!friendship) throw ["FRIENDSHIP_NOT_EXIST"];
+    if (friendship.status === StatusOfFriendship.ACCEPTED)
+      throw ["INVITE_ACCEPTED"];
+    if (friendship.status === StatusOfFriendship.NOT_ACCEPTED)
+      throw ["FRIENDSHIP_NOT_ACCEPTED_BEFORE"];
+    if (friendship.status === StatusOfFriendship.REMOVED)
+      throw ["FRIENDSHIP_REMOVED"];
+    return this.friendsRepositoryService.setStatusOfFriendship(
+      StatusOfFriendship.NOT_ACCEPTED,
       usernameOfFriend,
       usernameOfAcceptingUser
     );

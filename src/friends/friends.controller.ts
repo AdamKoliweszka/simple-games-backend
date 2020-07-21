@@ -2,7 +2,8 @@ import { Controller, Post, Req, Get, Body, Res, Put } from "@nestjs/common";
 import { FriendsService } from "./friends.service";
 import { CreateFriendRelationDto } from "./dto/create-friend-relation.dto";
 import { Response } from "express";
-import { AcceptFriendshipDto } from "./dto/accept-friendship.dto";
+import { ChangeStatusOfFriendshipDto } from "./dto/change-status-of-friendship.dto";
+import { StatusOfFriendship } from "./enum/status-friendship.enum";
 
 @Controller("friends")
 export class FriendsController {
@@ -32,15 +33,35 @@ export class FriendsController {
   async edit(
     @Res() resp: Response,
     @Req() req,
-    @Body() acceptFriendshipDto: AcceptFriendshipDto
+    @Body() changeStatusOfFriendshipDto: ChangeStatusOfFriendshipDto
   ) {
     let usernameOfUser = req.user.username;
-    let usernameOfFriend = acceptFriendshipDto.friendUsername;
+    let usernameOfFriend = changeStatusOfFriendshipDto.friendUsername;
     try {
-      let result = await this.friendsService.acceptRelationOfFriendship(
-        usernameOfUser,
-        usernameOfFriend
-      );
+      let result;
+      if (changeStatusOfFriendshipDto.status === StatusOfFriendship.ACCEPTED) {
+        result = await this.friendsService.acceptRelationOfFriendship(
+          usernameOfUser,
+          usernameOfFriend
+        );
+      } else if (
+        changeStatusOfFriendshipDto.status === StatusOfFriendship.REMOVED
+      ) {
+        result = await this.friendsService.removeRelationOfFriendship(
+          usernameOfUser,
+          usernameOfFriend
+        );
+      } else if (
+        changeStatusOfFriendshipDto.status === StatusOfFriendship.NOT_ACCEPTED
+      ) {
+        result = await this.friendsService.discardInviteToFriendship(
+          usernameOfUser,
+          usernameOfFriend
+        );
+      } else {
+        resp.status(422).json({ errors: ["BAD_STATUS"] });
+        return null;
+      }
       resp.status(201).json(result);
       return result;
     } catch (e) {
