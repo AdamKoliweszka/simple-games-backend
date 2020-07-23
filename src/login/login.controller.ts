@@ -9,7 +9,9 @@ export class LoginController {
   @Post()
   async create(@Res() resp: Response, @Body() loginDataDto: LoginDataDto) {
     let result = await this.loginService.getTokens(loginDataDto);
-    if (result) resp.status(201).json(result);
-    else resp.status(401).send();
+    if (result) {
+      result.username = loginDataDto.username;
+      resp.status(201).json(result);
+    } else resp.status(401).send();
   }
 }
