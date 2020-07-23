@@ -9,6 +9,7 @@ export class FriendsService {
   constructor(private friendsRepositoryService: FriendsRepositoryService) {}
 
   async addRelationOfFriendship(firstUsername: string, secondUsername: string) {
+    if (firstUsername === secondUsername) throw ["FRIENDSHIP_WITH_YOURSELF"];
     let isExist = await this.friendsRepositoryService.checkIfFriendshipExist(
       firstUsername,
       secondUsername
