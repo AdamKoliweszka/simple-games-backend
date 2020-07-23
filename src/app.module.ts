@@ -21,6 +21,7 @@ import { AuthGateway } from "./auth-ws/auth.gateway";
 import { AuthWsModule } from "./auth-ws/auth-ws.module";
 import { FriendsModule } from "./friends/friends.module";
 import { FriendsRepositoryModule } from "./friends-repository/friends-repository.module";
+import { PermissionsRepositoryModule } from './permissions-repository/permissions-repository.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { FriendsRepositoryModule } from "./friends-repository/friends-repository
     AuthWsModule,
     FriendsModule,
     FriendsRepositoryModule,
+    PermissionsRepositoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],
