@@ -67,4 +67,42 @@ describe("Test permissions functionality", () => {
       });
     });
   });
+  it("Adding permission to user by user with permission for additing permissions", () => {
+    let user1 = generateNewUser();
+    let user2 = generateNewUser();
+    let permissionToAddOtherPermissions = {
+      username: user1.username,
+      permission: "ADD_PERMISSION",
+    };
+    let permission = generateNewPermission(user2.username);
+    cy.request("POST", "localhost:3000/users", user1);
+    cy.request("POST", "localhost:3000/users", user2);
+    cy.request("POST", "localhost:3000/login", adminUser).then((value) => {
+      let accessToken = value.body.accessToken;
+
+      cy.request({
+        method: "POST",
+        url: "localhost:3000/permissions",
+        body: permissionToAddOtherPermissions,
+        auth: {
+          bearer: accessToken,
+        },
+      }).then((response) => {
+        cy.request("POST", "localhost:3000/login", user1).then((value) => {
+          let accessToken2 = value.body.accessToken;
+
+          cy.request({
+            method: "POST",
+            url: "localhost:3000/permissions",
+            body: permission,
+            auth: {
+              bearer: accessToken2,
+            },
+          }).then((response) => {
+            expect(response.status).to.eq(201);
+          });
+        });
+      });
+    });
+  });
 });
