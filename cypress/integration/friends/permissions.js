@@ -145,12 +145,58 @@ describe("Test permissions functionality", () => {
       }).then((response) => {
         cy.request({
           method: "DELETE",
-          url: "localhost:3000/permissions/" + response._id,
+          url: "localhost:3000/permissions/" + response.body._id,
           auth: {
             bearer: accessToken,
           },
         }).then((response) => {
           expect(response.status).to.eq(200);
+        });
+      });
+    });
+  });
+
+  it("Remove permission to user by user with permission for remove permissions", () => {
+    let user1 = generateNewUser();
+    let user2 = generateNewUser();
+    let permissionToRemove = {
+      username: user1.username,
+      permission: "REMOVE_PERMISSION",
+    };
+    let permission = generateNewPermission(user2.username);
+    cy.request("POST", "localhost:3000/users", user1);
+    cy.request("POST", "localhost:3000/users", user2);
+    cy.request("POST", "localhost:3000/login", adminUser).then((value) => {
+      let accessToken = value.body.accessToken;
+
+      cy.request({
+        method: "POST",
+        url: "localhost:3000/permissions",
+        body: permissionToRemove,
+        auth: {
+          bearer: accessToken,
+        },
+      }).then((response) => {
+        cy.request({
+          method: "POST",
+          url: "localhost:3000/permissions",
+          body: permission,
+          auth: {
+            bearer: accessToken,
+          },
+        }).then((response) => {
+          cy.request("POST", "localhost:3000/login", user1).then((value) => {
+            let accessToken2 = value.body.accessToken;
+            cy.request({
+              method: "DELETE",
+              url: "localhost:3000/permissions/" + response.body._id,
+              auth: {
+                bearer: accessToken2,
+              },
+            }).then((response) => {
+              expect(response.status).to.eq(200);
+            });
+          });
         });
       });
     });
