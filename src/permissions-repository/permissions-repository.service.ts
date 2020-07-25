@@ -1,8 +1,9 @@
 import { Injectable } from "@nestjs/common";
 import { Permission } from "./schema/permission.schema";
-import { Model } from "mongoose";
+import { Model, Mongoose } from "mongoose";
 import { InjectModel } from "@nestjs/mongoose";
 import { Permissions } from "./enum/permissions.enum";
+import { Types } from "mongoose";
 
 @Injectable()
 export class PermissionsRepositoryService {
@@ -18,7 +19,9 @@ export class PermissionsRepositoryService {
     return this.permissionModel.create({ username, permission });
   }
 
-  async removePermissionFromUser(username: string, permission: Permissions) {
-    return this.permissionModel.deleteOne({ username, permission });
+  async removePermissionByID(id: string) {
+    return this.permissionModel.deleteOne({
+      _id: Types.ObjectId(id),
+    });
   }
 }
