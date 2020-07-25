@@ -128,4 +128,31 @@ describe("Test permissions functionality", () => {
       });
     });
   });
+  it("Remove permission to user by admin", () => {
+    let user = generateNewUser();
+    let permission = generateNewPermission(user.username);
+    cy.request("POST", "localhost:3000/users", user);
+    cy.request("POST", "localhost:3000/login", adminUser).then((value) => {
+      let accessToken = value.body.accessToken;
+
+      cy.request({
+        method: "POST",
+        url: "localhost:3000/permissions",
+        body: permission,
+        auth: {
+          bearer: accessToken,
+        },
+      }).then((response) => {
+        cy.request({
+          method: "DELETE",
+          url: "localhost:3000/permissions/" + response._id,
+          auth: {
+            bearer: accessToken,
+          },
+        }).then((response) => {
+          expect(response.status).to.eq(200);
+        });
+      });
+    });
+  });
 });
