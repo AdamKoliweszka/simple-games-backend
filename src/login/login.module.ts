@@ -4,6 +4,7 @@ import { LoginService } from "./login.service";
 import { UserRepositoryModule } from "src/user-repository/user-repository.module";
 import { TokensFabricModule } from "src/tokens-fabric/tokens-fabric.module";
 import { LoginInfoRepositoryModule } from "src/login-info-repository/login-info-repository.module";
+import { PermissionsRepositoryModule } from "../permissions-repository/permissions-repository.module";
 
 @Module({
   controllers: [LoginController],
@@ -12,6 +13,7 @@ import { LoginInfoRepositoryModule } from "src/login-info-repository/login-info-
     UserRepositoryModule,
     TokensFabricModule,
     LoginInfoRepositoryModule,
+    PermissionsRepositoryModule,
   ],
 })
 export class LoginModule {}

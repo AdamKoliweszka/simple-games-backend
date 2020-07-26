@@ -8,9 +8,8 @@ export class LoginController {
   constructor(private loginService: LoginService) {}
   @Post()
   async create(@Res() resp: Response, @Body() loginDataDto: LoginDataDto) {
-    let result = await this.loginService.getTokens(loginDataDto);
+    let result = await this.loginService.login(loginDataDto);
     if (result) {
-      result.username = loginDataDto.username;
       resp.status(201).json(result);
     } else resp.status(401).send();
   }
