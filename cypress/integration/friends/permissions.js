@@ -201,4 +201,38 @@ describe("Test permissions functionality", () => {
       });
     });
   });
+  it("Error on removing permission to user witout permission", () => {
+    let user1 = generateNewUser();
+    let user2 = generateNewUser();
+    let permission = generateNewPermission(user2.username);
+    cy.request("POST", "localhost:3000/users", user1);
+    cy.request("POST", "localhost:3000/users", user2);
+    cy.request("POST", "localhost:3000/login", adminUser).then((value) => {
+      let accessToken = value.body.accessToken;
+
+      cy.request({
+        method: "POST",
+        url: "localhost:3000/permissions",
+        body: permission,
+        auth: {
+          bearer: accessToken,
+        },
+        failOnStatusCode: false,
+      }).then((response) => {
+        cy.request("POST", "localhost:3000/login", user1).then((value) => {
+          let accessToken2 = value.body.accessToken;
+          cy.request({
+            method: "DELETE",
+            url: "localhost:3000/permissions/" + response.body._id,
+            auth: {
+              bearer: accessToken2,
+            },
+            failOnStatusCode: false,
+          }).then((response) => {
+            expect(response.status).to.eq(422);
+          });
+        });
+      });
+    });
+  });
 });

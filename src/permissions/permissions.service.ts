@@ -15,7 +15,7 @@ export class PermissionsService {
   }
 
   async removePermissionByID(usernameOfRequestingUser: string, id: string) {
-    let canRemovePermission = await this.checkIfCanAddPermission(
+    let canRemovePermission = await this.checkIfCanRemovePermission(
       usernameOfRequestingUser
     );
     if (!canRemovePermission) throw ["NO_PERMISSION_TO_REMOVE_PERMISSION"];

@@ -41,8 +41,20 @@ export class PermissionsController {
   }
 
   @Delete(":id")
-  removePermissionFromUser(@Req() req, @Param() params) {
-    let username = req.username;
-    // return this.permissionsService.addPermissionToUser(username, params.id);
+  async removePermissionFromUser(
+    @Res() resp: Response,
+    @Req() req,
+    @Param() params
+  ) {
+    try {
+      let username = req.user.username;
+      let result = await this.permissionsService.removePermissionByID(
+        username,
+        params.id
+      );
+      resp.status(200).json(result);
+    } catch (e) {
+      resp.status(422).json({ errors: e });
+    }
   }
 }
