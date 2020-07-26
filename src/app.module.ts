@@ -21,6 +21,8 @@ import { AuthGateway } from "./auth-ws/auth.gateway";
 import { AuthWsModule } from "./auth-ws/auth-ws.module";
 import { FriendsModule } from "./friends/friends.module";
 import { FriendsRepositoryModule } from "./friends-repository/friends-repository.module";
+import { PermissionsRepositoryModule } from "./permissions-repository/permissions-repository.module";
+import { PermissionsModule } from "./permissions/permissions.module";
 
 @Module({
   imports: [
@@ -37,6 +39,8 @@ import { FriendsRepositoryModule } from "./friends-repository/friends-repository
     AuthWsModule,
     FriendsModule,
     FriendsRepositoryModule,
+    PermissionsRepositoryModule,
+    PermissionsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
@@ -47,7 +51,8 @@ export class AppModule implements NestModule {
       .apply(AuthMiddleware)
       .forRoutes(
         { path: "chat", method: RequestMethod.POST },
-        { path: "friends", method: RequestMethod.ALL }
+        { path: "friends", method: RequestMethod.ALL },
+        { path: "permissions", method: RequestMethod.ALL }
       );
   }
 }
